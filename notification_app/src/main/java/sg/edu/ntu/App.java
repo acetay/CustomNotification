@@ -3,6 +3,7 @@ package sg.edu.ntu;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import sg.edu.ntu.exception.InvalidInputException;
 import sg.edu.ntu.notification.CustomNotification;
 import sg.edu.ntu.notification.EmailNotification;
 import sg.edu.ntu.notification.SMSNotification;
@@ -17,20 +18,29 @@ public class App
 
     public static void main( String[] args )
     {
-        CustomNotification n1 = new SMSNotification("+65 9123 4567", "Good morning!");
-        n1.send();
-        System.out.println("=========================================================");
-        CustomNotification n2 = new EmailNotification("edison@mail.com", "Good afternoon!");
-        n2.send();
-
+        String to = "edison@mail.com";
+        try{
+            // CustomNotification n1 = new SMSNotification("+65 9123 4567", "Good morning!");
+            // n1.send();
+            // System.out.println("=========================================================");
+            CustomNotification n2 = new EmailNotification(to, "Good afternoon!");
+            n2.send();
+        }catch(InvalidInputException iie){            
+            logger.error("Invalid email input data:"+to,iie);
+        }catch(Exception ex){
+            logger.error("Unknown error", ex);
+        }finally{
+            System.out.println("FINALLY BLOCK");
+        }
         testLogger();
     }
+    
 
     public static void testLogger(){
-        logger.debug("Debug message");
-        logger.info("Info message");
-        logger.warn("Warning message");
-        logger.error("Error message");
-        logger.fatal("Fatal message");
+        logger.debug("Debug message"); // excessive information for tracing and debugging
+        logger.info("Info message"); // sufficient to trace the path
+        logger.warn("Warning message"); // something that u might have to fix in future
+        logger.error("Error message"); // execptions
+        logger.fatal("Fatal message"); // blocker
     }
 }

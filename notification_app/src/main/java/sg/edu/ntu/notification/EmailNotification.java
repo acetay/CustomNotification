@@ -1,6 +1,7 @@
 package sg.edu.ntu.notification;
 
 import sg.edu.ntu.api.Connectable;
+import sg.edu.ntu.exception.InvalidInputException;
 
 public class EmailNotification extends CustomNotification implements Connectable{
     public EmailNotification(String to, String content){
@@ -8,12 +9,19 @@ public class EmailNotification extends CustomNotification implements Connectable
         this.init();
     }
 
+    private boolean isValidFormat(String email){
+        return false;
+    }
+
     @Override
-    public void send(){
+    public void send() throws Exception{
+
+        if(!isValidFormat(this.to)) throw new InvalidInputException("Email format is incorrect");
+
         if(checkHasNetworkConnection())
-            System.out.println("Sending email to "+this.to+" with message: "+this.content);
+            System.out.println("Sending email to "+this.to+" with message: "+this.content); // SUCCESS
         else
-            System.out.println("Unable to send Email due to network error");
+            throw new Exception("Unable to send Email due to network error");            
     }
 
     @Override

@@ -15,11 +15,11 @@ public class SMSNotification extends CustomNotification implements Connectable{
 
     // Method overriding
     @Override
-    public void send(){
+    public void send() throws Exception{
         if(checkHasNetworkConnection()){
             System.out.println("Sending SMS to "+this.to+" with message: "+this.content);
         }else{
-            System.out.println("Unable to send SMS due to network error");
+            throw new Exception("Unable to send SMS due to network error");
         }        
     }
 
@@ -31,10 +31,6 @@ public class SMSNotification extends CustomNotification implements Connectable{
     @Override
     public boolean checkHasNetworkConnection() {
         System.out.println("Check whether has network connection.");
-        boolean isSuccess = true;
-        if(isSuccess){
-            CustomNotification.isOperating = true;
-        }
-        return isSuccess;
+        return false;
     }
 }
